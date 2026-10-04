@@ -1,0 +1,41 @@
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+let student=[
+    {
+        id : 1,
+        name:"Alice",
+        age:20
+   },
+   {
+        id : 2,
+        name:"Bob",
+        age:21
+    }
+]
+
+app.get ("/student", (req,res) => {
+    res.json(student);
+})
+
+app.post("/student", (req,res) => {
+    
+    student.push(req.body);
+    res.send("Student added");
+})
+
+app.put("/student", (req,res) => {
+    student = req.body;
+    res.send("Student updates");
+})
+
+app.delete("/student", (req,res) => {
+    student = req.body;
+    res.send("Student deleted");
+})
+
+app.listen(3000, () => {
+    console.log("Server Started");
+});
