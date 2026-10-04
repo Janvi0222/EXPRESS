@@ -1,0 +1,106 @@
+ npm create vite@latest todo-app 
+
+npm install styled-components
+
+import { useState } from "react";
+import styled from "styled-components";
+
+const Button = styled.button`
+    background: #4caf50;
+    color: white;
+    padding: 8px;
+`;
+
+function App() {
+    const [input, setInput] = useState("");
+    const [tasks, setTasks] = useState([]);
+
+    const addTask = () => {
+        if (!input.trim()) return;
+
+        setTasks([
+            ...tasks,
+            { text: input, completed: false }
+        ]);
+
+        setInput("");
+    };
+
+    const toggleTask = (i) => {
+        const updated = [...tasks];
+        updated[i].completed = !updated[i].completed;
+        setTasks(updated);
+    };
+
+    return (
+        <div>
+            <h1>Todo List</h1>
+
+            <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Enter task"
+            />
+
+            <Button onClick={addTask}>Add</Button>
+
+            {tasks.map((t, i) => (
+                <div key={i}>
+                    <input
+                        type="checkbox"
+                        checked={t.completed}
+                        onChange={() => toggleTask(i)}
+                    />
+
+                    <span>{t.text}</span>
+                </div>
+            ))}
+
+            <br />
+
+            <Button onClick={() => setTasks([])}>
+                Clear All
+            </Button>
+        </div>
+    );
+}
+
+export default App;
+
+
+22
+import { useState } from "react";
+
+function Todo() {
+    const [task, setTask] = useState("");
+    const [tasks, setTasks] = useState([]);
+
+    function addTask() {
+        if (task !== "") {
+            setTasks([...tasks, task]);
+            setTask("");
+        }
+    }
+
+    return (
+        <div>
+            <h1>TODO List</h1>
+
+            <input
+                value={task}
+                onChange={(e) => setTask(e.target.value)}
+                placeholder="Enter task"
+            />
+
+            <button onClick={addTask}>Add</button>
+
+            <ul>
+                {tasks.map((t, index) => (
+                    <li key={index}>{t}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+export default Todo;
