@@ -1,0 +1,67 @@
+npm install express socket.io
+
+server.js
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+app.use(express.static("public"));
+
+io.on("connection", (socket) => {
+    console.log("User Connected");
+
+    socket.on("chat", (message) => {
+        io.emit("chat", message);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User Disconnected");
+    });
+});
+
+server.listen(2000, () => {
+    console.log("Chat Server Started");
+});
+
+index.html under public folder:
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Application</title>
+</head>
+
+<body>
+
+    <h1>Chat Application</h1>
+
+    <input id="message" placeholder="Enter message">
+    <button onclick="sendMessage()">Send</button>
+
+    <ul id="messages"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const socket = io();
+
+        function sendMessage() {
+            const message = document.getElementById("message").value;
+
+            socket.emit("chat", message);
+
+            document.getElementById("message").value = "";
+        }
+
+        socket.on("chat", (message) => {
+            const li = document.createElement("li");
+            li.innerText = message;
+            document.getElementById("messages").appendChild(li);
+        });
+    </script>
+
+</body>
+</html>
