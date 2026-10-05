@@ -1,0 +1,42 @@
+npm init -y
+npm install express mongoose multer
+
+const express = require("express");
+const mongoose = require("mongoose");
+const multer = require("multer");
+
+const app = express();
+
+app.use(express.json());
+
+mongoose.connect("mongodb://127.0.0.1:27017/filedb")
+    .then(() => console.log("MongoDB Connected"));
+
+const File = mongoose.model("File", {
+    filename: String,
+    path: String
+});
+
+const upload = multer({ dest: "uploads/" });
+
+app.post("/upload", upload.single("file"), (req, res) => {
+
+    const data = new File({
+        filename: req.file.originalname,
+        path: req.file.path
+    });
+
+    data.save().then(() => {
+        res.send("File Uploaded");
+    });
+});
+
+app.get("/files", (req, res) => {
+    File.find().then(data => {
+        res.json(data);
+    });
+});
+
+app.listen(3000, () => {
+    console.log("Server Started");
+});
