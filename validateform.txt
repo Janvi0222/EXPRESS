@@ -1,0 +1,41 @@
+import { useState } from "react";
+
+function App() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+
+    function submitForm(e) {
+        e.preventDefault();
+
+        if (name === "" || email === "") {
+            alert("All fields are required");
+            return;
+        }
+
+        alert("Form Submitted");
+    }
+
+    return (
+        <form onSubmit={submitForm}>
+            <h1>User Form</h1>
+
+            <input
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />
+            <br /><br />
+
+            <input
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <br /><br />
+
+            <button type="submit">Submit</button>
+        </form>
+    );
+}
+
+export default App;
